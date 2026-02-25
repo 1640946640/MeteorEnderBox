@@ -1,0 +1,3 @@
+# MeteorEnderBox
+
+Minecraft末影箱插件，支持多版本Minecraft，具有经济系统集成和管理员功能
