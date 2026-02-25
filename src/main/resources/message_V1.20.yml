@@ -1,0 +1,37 @@
+# 消息配置文件
+# 1.20版本
+
+# 前缀
+prefix: "&7[&e末影箱&7]"
+
+# 消息
+mes:
+  # 帮助
+  help: "&e/eenderbox help 查看帮助"
+  help-1: "&e/enderbox reload 重载插件"
+  help-2: "&e/enderbox open <玩家名> <末影箱编号> 管理员打开玩家的末影箱"
+  
+  # 错误
+  no-permission: "&c你没有权限使用此命令"
+  no-player: "&c玩家不存在"
+  no-box: "&c末影箱不存在"
+  no-money: "&c金钱不足"
+  no-points: "&c点券不足"
+  
+  # 成功
+  open: "&a成功打开末影箱"
+  unlock: "&a成功解锁末影箱"
+  reload: "&a插件已重载"
+  
+  # 其他
+  load-data: "&a正在加载数据..."
+  sur-load: "&a数据加载完成"
+  save: "&a数据已保存"
+  
+  # 末影箱信息
+  box-info: "&e末影箱 &6{number} &e需要 {price} {type}"
+  box-unlock: "&e是否花费 {price} {type} 解锁末影箱 {number}?"
+  
+  # 经济类型
+  money: "&e金币"
+  points: "&e点券"

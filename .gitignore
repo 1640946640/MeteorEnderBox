@@ -1,0 +1,52 @@
+# Maven
+/target/
+/.mvn/
+/mvnw
+/mvnw.cmd
+
+# IDE
+/.idea/
+/*.iml
+/*.ipr
+/*.iws
+/.settings/
+/.project
+/.classpath
+
+# OS generated files
+Thumbs.db
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+
+# Logs
+logs
+*.log
+
+# Local configuration files
+local.properties
+*.local
+
+# Dependency directories
+/src/lib/
+
+# Compiled class file
+*.class
+
+# Build output
+build/
+out/
+
+# Test output
+test-output/
+
+# Coverage output
+coverage/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/

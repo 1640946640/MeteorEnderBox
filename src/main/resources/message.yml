@@ -1,0 +1,84 @@
+prefix: '&f[&5&l&o末影箱&f]'
+economy-info:
+  vault: '&e金币'
+  points: '&c点卷'
+title:
+  main: '&5&l末影箱'
+  unlock: '&f&l解锁末影箱 &2&l#@number@'
+  box: '&a&l末影箱&2&l#@number@'
+mes:
+  reload: '@prefix@ &c已重载配置文件'
+  start-page: '@prefix@ &c已经没有上一页了'
+  end-page: '@prefix@ &c已经没有下一页了'
+  pre-number: '@prefix@ &7请先解锁 &2# @number@ &e末影箱'
+  no-money: '@prefix@ &7你没有足够的&e金币&7来支持这次消费'
+  no-points: '@prefix@ &7你没有足够的&c点卷&7来支持这次消费'
+  unlock-box: '@prefix@ &7已解锁&2# @number@ &e末影箱'
+  lock-data: '@prefix@ &7数据已加锁,请等待保存完成...'
+  save-data: '@prefix@ &7已保存仓库物品'
+  load-data: '@prefix@ &7正在为您加载跨服数据...'
+  sur-load: '@prefix@ &7数据已加载完成'
+  max-lock: '@prefix@ &7已到达解锁上限,氪点钱8'
+  help:
+    - '&a&lMeteorEnderBox | &f随身末影箱'
+    - '&c /enderbox open &7打开随身末影箱'
+  admin-help:
+    - '&c /enderbox reload &7重载配置文件'
+Item:
+  info:
+    id: 'STAINED_GLASS_PANE'
+    data: 10
+    name: '&f[ &b&l信息 &f]'
+    lore:
+      - ''
+      - '&f当前已解锁 &c@number@ /&a@max@'
+      - ''
+  unlock-row:
+    id:
+      2: "STAINED_GLASS"
+      4: "STAINED_GLASS"
+      6: "STAINED_GLASS"
+    data:
+      2: 0
+      4: 1
+      6: 2
+    name: '&f解锁[&2&l#@number@&f]'
+    lore:
+      - ''
+      - '&f解锁行数: &6@rows@'
+      - '&f解锁花费: &6@points@ @paytype@'
+      - ''
+  flag:
+    id: 'STAINED_GLASS_PANE'
+    data: 0
+    name: '&f&l nmsl'
+    lore: []
+  next:
+    id: 'STAINED_GLASS_PANE'
+    data: 5
+    name: '&f翻页&f[&a下一页&f]'
+    lore: []
+  pre:
+    id: 'STAINED_GLASS_PANE'
+    data: 5
+    name: '&f翻页&f[&a上一页&f]'
+    lore: []
+  lock:
+    id: 'BARRIER'
+    data: 0
+    name: '&2#@number@ &e末影箱 &f[&c&l已锁定&f]'
+    lore:
+      - ''
+      - '&f解锁使用货币 - @paytype@'
+      - ''
+      - '&c点击查看'
+  unlock:
+    id: ENDER_CHEST
+    data: 0
+    name: '&2#@number@ &e末影箱 &f[&a&l已解锁&f]'
+    lore:
+      - ''
+      - '&f仓库大小 - &a&l@rows@ 行'
+      - '&f仓库使用量 - &c@item@/&a@max@'
+      - ''
+      - '&c点击查看'

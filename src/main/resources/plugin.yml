@@ -1,0 +1,28 @@
+name: MeteorEnderBox
+version: 1.0-SNAPSHOT
+main: com.meteor.meteorenderbox.MeteorEnderBox
+depend: []
+softdepend:
+  - Vault
+  - PlayerPoints
+authors: [Freak_64]
+commands:
+  enderbox:
+    description: 末影箱管理命令，用于打开和管理末影箱
+    usage: /<command> [help|open|reload] [玩家名称]
+    aliases:
+      - eb
+    permission: meteorenderbox.use
+    permission-message: 你没有权限使用此命令！
+    subcommands:
+      help:
+        description: 显示帮助信息
+        usage: /<command> help
+      open:
+        description: 打开末影箱，可指定玩家名称（管理员）
+        usage: /<command> open [玩家名称]
+      reload:
+        description: 重新加载插件配置
+        usage: /<command> reload
+        permission: meteorenderbox.reload
+        permission-message: 你没有权限重新加载插件！

@@ -1,0 +1,30 @@
+#author Freak_64
+#联系qq1640946640
+#权限meteor.ender.* 可解锁末影箱数
+
+
+mysql-info:
+  ip: '127.0.0.1'
+  port: 3306
+  parm: 'useSsl=false'
+  user: 'root'
+  password: 'admin'
+  database: 'test0'
+  validSql: 'select knit from enderbox'
+setting:
+  #默认可解锁多少格箱子
+  default-maxlock: 10
+  #末影箱总数
+  max-amount: 20
+  #从第几格仓库花费点卷解锁
+  points-number: 10
+  #解锁花费金币数
+  take-money:
+    2: 1000
+    4: 3000
+    6: 10000
+  #解锁点卷数
+  take-points:
+    2: 100
+    4: 200
+    6: 400
