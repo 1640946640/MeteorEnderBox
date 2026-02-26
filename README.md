@@ -1,5 +1,6 @@
 # MeteorEnderBox
 
+<<<<<<< HEAD
 MeteorEnderBox 是一个 Minecraft 插件，为玩家提供随身末影箱功能，支持多末影箱管理、管理员查看玩家末影箱等功能。
 
 ## 功能特点
@@ -113,3 +114,6 @@ setting:
 - 插件需要 Vault 和 PlayerPoints 插件的支持
 - 首次启动时会自动创建数据库表结构
 - 建议定期备份数据库，以防数据丢失
+=======
+Minecraft末影箱插件，支持多版本Minecraft，具有经济系统集成和管理员功能
+>>>>>>> d199dc23307236853a9b444e91a7b223fe082c7d

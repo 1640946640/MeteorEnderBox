@@ -340,4 +340,8 @@ public class EnderData
     public void close() {
         this.fastMySQLStorage.disable();
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> d199dc23307236853a9b444e91a7b223fe082c7d

@@ -1,14 +1,15 @@
 package com.meteor.meteorenderbox.cmd;
 
 import com.meteor.meteorenderbox.*;
+import com.meteor.meteorenderbox.data.*;
+import com.meteor.meteorenderbox.util.*;
 import org.bukkit.command.*;
 import org.bukkit.entity.*;
-import com.meteor.meteorenderbox.util.*;
 import org.bukkit.*;
 
 /**
- * 末影箱命令执行器
- * 处理enderbox命令的各种子命令
+ * 末影箱命令执行类
+ * 处理玩家和管理员的命令请求
  */
 public class EnderBoxCmds implements CommandExecutor
 {
@@ -24,69 +25,87 @@ public class EnderBoxCmds implements CommandExecutor
     }
     
     /**
-     * 处理命令执行
+     * 执行命令
      * @param sender 命令发送者
-     * @param command 命令对象
+     * @param command 命令
      * @param label 命令标签
      * @param args 命令参数
-     * @return 是否成功执行
+     * @return 是否执行成功
      */
     public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
-        // 处理help命令
-        if (args.length == 0 || args[0].equalsIgnoreCase("help")) {
-            this.plugin.getEnderData().getMessageManager().getStringList("mes.help").forEach(a -> sender.sendMessage(a));
-            // 如果是管理员，显示管理员帮助
-            if (sender.isOp()) {
-                this.plugin.getEnderData().getMessageManager().getStringList("mes.admin-help").forEach(b -> sender.sendMessage(b));
+        // 检查命令发送者是否为玩家
+        if (!(sender instanceof Player)) {
+            sender.sendMessage("只能由玩家执行此命令");
+            return true;
+        }
+        
+        final Player player = (Player)sender;
+        
+        // 处理不同的命令参数
+        if (args.length == 0) {
+            // 没有参数，显示帮助信息
+            player.sendMessage("MeteorEnderBox | 随身末影箱");
+            player.sendMessage(" /enderbox open 打开随身末影箱");
+            player.sendMessage(" /enderbox reload 重载配置文件");
+            if (player.hasPermission("meteor.enderbox.admin")) {
+                player.sendMessage(" /enderbox open <玩家名> 打开指定玩家的末影箱");
             }
             return true;
         }
         
-        // 处理open命令，打开末影箱
+        // 处理 open 命令
         if (args[0].equalsIgnoreCase("open")) {
-            // 管理员打开其他玩家的末影箱
-            if (args.length == 2 && sender.isOp()) {
+            // 检查是否有管理员权限打开其他玩家的末影箱
+            if (args.length >= 2 && player.hasPermission("meteor.enderbox.admin")) {
                 final String targetPlayerName = args[1];
-                final Player senderPlayer = (sender instanceof Player) ? (Player)sender : null;
+                final Player targetPlayer = Bukkit.getPlayerExact(targetPlayerName);
                 
-                // 加载目标玩家的数据
-                if (!this.plugin.getEnderData().getPlayerDataMap().containsKey(targetPlayerName)) {
-                    this.plugin.getEnderData().loadPlayerData(targetPlayerName);
+                if (targetPlayer == null) {
+                    player.sendMessage(this.plugin.getEnderData().getMessageManager().getString("prefix") + " " + this.plugin.getEnderData().getMessageManager().getString("mes.no-player"));
+                    return true;
                 }
                 
-                // 打开目标玩家的末影箱界面
-                if (senderPlayer != null) {
-                    InventoryUtil.openInv(senderPlayer, targetPlayerName, 1);
-                    sender.sendMessage("已打开玩家 " + targetPlayerName + " 的末影箱");
-                }
+                // 加载目标玩家的末影箱数据并打开
+                this.plugin.getEnderData().loadPlayerData(targetPlayerName);
+                player.sendMessage(this.plugin.getEnderData().getMessageManager().getString("prefix") + " " + "正在打开玩家 " + targetPlayerName + " 的末影箱...");
                 return true;
             }
+            
             // 普通玩家打开自己的末影箱
-            else if (args.length == 1 && sender instanceof Player) {
-                final Player player = (Player)sender;
-                final String playerName = player.getName();
-                // 如果玩家数据不存在，加载数据
-                if (!this.plugin.getEnderData().getPlayerDataMap().containsKey(playerName)) {
-                    this.plugin.getEnderData().loadPlayerData(playerName);
-                }
-                else {
-                    // 打开末影箱界面
-                    InventoryUtil.openInv(player, 1);
-                }
+            this.plugin.getEnderData().loadPlayerData(player.getName());
+            return true;
+        }
+        
+        // 处理 reload 命令
+        if (args[0].equalsIgnoreCase("reload")) {
+            if (!player.hasPermission("meteor.enderbox.admin")) {
+                player.sendMessage(this.plugin.getEnderData().getMessageManager().getString("prefix") + " " + this.plugin.getEnderData().getMessageManager().getString("mes.no-permission"));
                 return true;
             }
-        }
-        
-        // 处理reload命令，重新加载配置
-        if (args[0].equalsIgnoreCase("reload") && args.length == 1 && sender.isOp()) {
-            // 关闭所有在线玩家的 inventory
-            Bukkit.getOnlinePlayers().forEach(a -> Bukkit.getOnlinePlayers().forEach(player -> player.closeInventory()));
-            // 重新加载配置
+            
             this.plugin.getEnderData().reloadConfig();
-            sender.sendMessage(this.plugin.getEnderData().getMessageManager().getString("mes.reload"));
-            this.plugin.reloadConfig();
+            player.sendMessage(this.plugin.getEnderData().getMessageManager().getString("prefix") + " " + this.plugin.getEnderData().getMessageManager().getString("mes.reload"));
+            return true;
         }
         
-        return false;
+        // 处理 help 命令
+        if (args[0].equalsIgnoreCase("help")) {
+            player.sendMessage("MeteorEnderBox | 随身末影箱");
+            player.sendMessage(" /enderbox open 打开随身末影箱");
+            player.sendMessage(" /enderbox reload 重载配置文件");
+            if (player.hasPermission("meteor.enderbox.admin")) {
+                player.sendMessage(" /enderbox open <玩家名> 打开指定玩家的末影箱");
+            }
+            return true;
+        }
+        
+        // 未知命令，显示帮助信息
+        player.sendMessage("MeteorEnderBox | 随身末影箱");
+        player.sendMessage(" /enderbox open 打开随身末影箱");
+        player.sendMessage(" /enderbox reload 重载配置文件");
+        if (player.hasPermission("meteor.enderbox.admin")) {
+            player.sendMessage(" /enderbox open <玩家名> 打开指定玩家的末影箱");
+        }
+        return true;
     }
 }
