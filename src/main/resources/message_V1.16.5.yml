@@ -24,6 +24,7 @@ mes:
     - '&c /enderbox open &7打开随身末影箱'
   admin-help:
     - '&c /enderbox reload &7重载配置文件'
+    - '&c /enderbox open <玩家名> &7打开指定玩家的末影箱'
 Item:
   info:
     id: 'GREEN_STAINED_GLASS_PANE'

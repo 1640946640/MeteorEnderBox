@@ -3,18 +3,6 @@ package com.meteor.meteorenderbox.data;
 import org.bukkit.inventory.*;
 import java.util.*;
 
-<<<<<<< HEAD
-public class Box
-{
-    int number;
-    int slot;
-    Map<Integer, ItemStack> map;
-    
-    public Box() {
-        this.map = new HashMap<Integer, ItemStack>();
-    }
-    
-=======
 /**
  * 末影箱模型类
  * 存储末影箱的物品和属性
@@ -29,50 +17,36 @@ public class Box
     private int slot;
     
     /**
+     * 构造函数，初始化末影箱数据
+     */
+    public Box() {
+        this.map = new HashMap<Integer, ItemStack>();
+    }
+    
+    /**
      * 获取末影箱编号
      * @return 末影箱编号
      */
->>>>>>> d199dc23307236853a9b444e91a7b223fe082c7d
     public int getNumber() {
         return this.number;
     }
     
-<<<<<<< HEAD
-=======
     /**
      * 设置末影箱编号
      * @param number 末影箱编号
      */
->>>>>>> d199dc23307236853a9b444e91a7b223fe082c7d
     public void setNumber(final int number) {
         this.number = number;
     }
     
-<<<<<<< HEAD
-    public int getSlot() {
-        return this.slot;
-    }
-    
-    public void setSlot(final int slot) {
-        this.slot = slot;
-    }
-    
-=======
     /**
      * 获取末影箱物品映射
      * @return 物品映射
      */
->>>>>>> d199dc23307236853a9b444e91a7b223fe082c7d
     public Map<Integer, ItemStack> getMap() {
         return this.map;
     }
     
-<<<<<<< HEAD
-    public void setMap(final Map<Integer, ItemStack> map) {
-        this.map = map;
-    }
-}
-=======
     /**
      * 设置末影箱物品映射
      * @param map 物品映射
@@ -97,4 +71,3 @@ public class Box
         this.slot = slot;
     }
 }
->>>>>>> d199dc23307236853a9b444e91a7b223fe082c7d

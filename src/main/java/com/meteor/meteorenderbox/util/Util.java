@@ -1,13 +1,21 @@
 package com.meteor.meteorenderbox.util;
 
 import org.bukkit.entity.*;
-<<<<<<< HEAD
 import org.bukkit.permissions.*;
 import com.meteor.meteorenderbox.*;
 import java.util.*;
 
+/**
+ * 工具类
+ * 提供一些通用的工具方法
+ */
 public class Util
 {
+    /**
+     * 获取玩家最大可解锁末影箱数量
+     * @param player 玩家
+     * @return 最大可解锁末影箱数量
+     */
     public static int getMaxLockBox(final Player player) {
         for (final PermissionAttachmentInfo perm : player.getEffectivePermissions()) {
             if (perm.getPermission().startsWith("meteor.ender.")) {
@@ -16,15 +24,7 @@ public class Util
         }
         return MeteorEnderBox.Instance.getConfig().getInt("setting.default-maxlock");
     }
-}
-=======
-
-/**
- * 工具类
- * 提供一些通用的工具方法
- */
-public class Util
-{
+    
     /**
      * 发送消息给玩家
      * @param player 玩家
@@ -43,4 +43,3 @@ public class Util
         return player != null && player.isOnline();
     }
 }
->>>>>>> d199dc23307236853a9b444e91a7b223fe082c7d

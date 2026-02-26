@@ -1,11 +1,11 @@
 package com.meteor.meteorenderbox.util;
 
-<<<<<<< HEAD
 import org.black_ixx.playerpoints.*;
 import net.milkbowl.vault.economy.*;
-
 import org.bukkit.*;
+import org.bukkit.entity.Player;
 import com.meteor.meteorenderbox.*;
+import java.util.UUID;
 
 /**
  * API管理类
@@ -14,7 +14,7 @@ import com.meteor.meteorenderbox.*;
 public class ApiManager
 {
     /** PlayerPoints API实例 */
-    public static PlayerPointsAPI pointsAPI;
+    public static org.black_ixx.playerpoints.PlayerPointsAPI pointsAPI;
     /** Vault经济API实例 */
     public static Economy econmy;
     
@@ -25,11 +25,18 @@ public class ApiManager
      * @return 是否成功扣除
      */
     public static boolean takeMoney(final String player, final int money) {
-        Bukkit.getPlayer(player).closeInventory();
+        // 检查玩家是否在线
+        Player onlinePlayer = Bukkit.getPlayer(player);
+        if (onlinePlayer != null) {
+            onlinePlayer.closeInventory();
+        }
+        
+        // 检查余额
         if (ApiManager.econmy.getBalance(player) < money) {
-            Bukkit.getPlayer(player).sendMessage(MeteorEnderBox.Instance.getEnderData().getMessageManager().getString("mes.no-money"));
             return false;
         }
+        
+        // 扣除金钱
         ApiManager.econmy.withdrawPlayer(player, (double)money);
         return true;
     }
@@ -41,39 +48,32 @@ public class ApiManager
      * @return 是否成功扣除
      */
     public static boolean takePoints(final String player, final int points) {
-        Bukkit.getPlayer(player).closeInventory();
-        if (ApiManager.pointsAPI.look(Bukkit.getPlayer(player).getUniqueId()) < points) {
-            Bukkit.getPlayer(player).sendMessage(MeteorEnderBox.Instance.getEnderData().getMessageManager().getString("mes.no-points"));
-            return false;
+        // 检查玩家是否在线
+        Player onlinePlayer = Bukkit.getPlayer(player);
+        if (onlinePlayer != null) {
+            onlinePlayer.closeInventory();
         }
-        ApiManager.pointsAPI.take(Bukkit.getPlayer(player).getUniqueId(), points);
+        
+        // 检查余额
+        if (onlinePlayer != null) {
+            if (ApiManager.pointsAPI.look(onlinePlayer.getUniqueId()) < points) {
+                return false;
+            }
+            ApiManager.pointsAPI.take(onlinePlayer.getUniqueId(), points);
+        } else {
+            // 离线玩家处理 - 使用 UUID 转换
+            try {
+                UUID playerUUID = Bukkit.getOfflinePlayer(player).getUniqueId();
+                if (ApiManager.pointsAPI.look(playerUUID) < points) {
+                    return false;
+                }
+                ApiManager.pointsAPI.take(playerUUID, points);
+            } catch (Exception e) {
+                return false;
+            }
+        }
         return true;
     }
-    
-    /**
-     * 静态初始化块
-     * 初始化API实例为null
-     */
-    static {
-        ApiManager.pointsAPI = null;
-        ApiManager.econmy = null;
-    }
-}
-=======
-import net.milkbowl.vault.economy.*;
-import org.black_ixx.playerpoints.*;
-import org.black_ixx.playerpoints.api.*;
-
-/**
- * API管理类
- * 负责管理经济系统和点券系统的API
- */
-public class ApiManager
-{
-    /** 经济系统API */
-    public static Economy econmy;
-    /** 点券系统API */
-    public static PlayerPointsAPI pointsAPI;
     
     /**
      * 检查经济系统是否可用
@@ -90,5 +90,13 @@ public class ApiManager
     public static boolean isPoints() {
         return ApiManager.pointsAPI != null;
     }
+    
+    /**
+     * 静态初始化块
+     * 初始化API实例为null
+     */
+    static {
+        ApiManager.pointsAPI = null;
+        ApiManager.econmy = null;
+    }
 }
->>>>>>> d199dc23307236853a9b444e91a7b223fe082c7d

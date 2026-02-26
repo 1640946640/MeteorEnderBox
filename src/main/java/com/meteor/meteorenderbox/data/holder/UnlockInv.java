@@ -1,23 +1,5 @@
 package com.meteor.meteorenderbox.data.holder;
 
-<<<<<<< HEAD
-import com.meteor.meteorenderbox.data.*;
-import org.bukkit.inventory.*;
-
-public class UnlockInv implements InventoryHolder
-{
-    int number;
-    PayType payType;
-    
-    public UnlockInv(final int number) {
-        this.number = number;
-    }
-    
-    public Inventory getInventory() {
-        return null;
-    }
-    
-=======
 import org.bukkit.inventory.*;
 
 /**
@@ -49,32 +31,18 @@ public class UnlockInv implements InventoryHolder
      * 获取末影箱编号
      * @return 末影箱编号
      */
->>>>>>> d199dc23307236853a9b444e91a7b223fe082c7d
     public int getNumber() {
         return this.number;
     }
     
-<<<<<<< HEAD
-=======
     /**
      * 设置末影箱编号
      * @param number 末影箱编号
      */
->>>>>>> d199dc23307236853a9b444e91a7b223fe082c7d
     public void setNumber(final int number) {
         this.number = number;
     }
     
-<<<<<<< HEAD
-    public PayType getPayType() {
-        return this.payType;
-    }
-    
-    public void setPayType(final PayType payType) {
-        this.payType = payType;
-    }
-}
-=======
     /**
      * 获取支付类型
      * @return 支付类型
@@ -116,4 +84,3 @@ public class UnlockInv implements InventoryHolder
         return null;
     }
 }
->>>>>>> d199dc23307236853a9b444e91a7b223fe082c7d

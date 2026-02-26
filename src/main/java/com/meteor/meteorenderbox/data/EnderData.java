@@ -81,7 +81,12 @@ public class EnderData
         (this.fastMySQLStorage = new FastMySQLStorage((JavaPlugin)this.plugin, this.plugin.getConfig().getConfigurationSection("mysql-info"))).enable();
         
         // 初始化消息管理器，根据服务器版本选择配置文件
-        this.messageManager = new MessageManager(YamlConfiguration.loadConfiguration(this.getVersionedMessageFile()), true);
+        YamlConfiguration messageConfig = YamlConfiguration.loadConfiguration(this.getVersionedMessageFile());
+        
+        // 确保所有必要的消息键存在
+        this.ensureMessageKeysExist(messageConfig);
+        
+        this.messageManager = new MessageManager(messageConfig, true);
         
         // 创建数据库表
         final Column player = Column.of("player", Column.Char.CHAR, true, new int[] { 25 });
@@ -177,7 +182,16 @@ public class EnderData
             final Map<Integer, ItemStack> itemStackMap = new HashMap<Integer, ItemStack>();
             if (yml.getConfigurationSection(a + ".items") != null) {
                 final ConfigurationSection items = yml.getConfigurationSection(a + ".items");
-                items.getKeys(false).forEach(item -> itemStackMap.put(Integer.valueOf(item), items.getItemStack(item)));
+                items.getKeys(false).forEach(item -> {
+                    try {
+                        ItemStack itemStack = items.getItemStack(item);
+                        if (itemStack != null) {
+                            itemStackMap.put(Integer.valueOf(item), itemStack);
+                        }
+                    } catch (Exception e) {
+                        plugin.getLogger().warning("Failed to load item at slot " + item + " in box " + a + ": " + e.getMessage());
+                    }
+                });
             }
             box.setMap(itemStackMap);
             box.setSlot(yml.getInt(a + ".rows") * 9);
@@ -261,17 +275,18 @@ public class EnderData
     
     /**
      * 解锁末影箱
+     * @param player 执行解锁操作的玩家（管理员）
      * @param playerData 玩家数据
      * @param number 末影箱编号
      * @param row 行数
      */
-    public void unLockBox(final PlayerData playerData, final int number, final int row) {
+    public void unLockBox(final Player player, final PlayerData playerData, final int number, final int row) {
         final Box box = new Box();
         box.setNumber(number);
         box.setSlot(row * 9);
         playerData.setNumber(number);
         playerData.unLockBox(number, box);
-        InventoryUtil.openInv(Bukkit.getPlayer(playerData.getPlayer()), 1);
+        InventoryUtil.openInv(player, playerData.getPlayer(), 1);
     }
     
     /**
@@ -335,13 +350,57 @@ public class EnderData
     }
     
     /**
+     * 确保所有必要的消息键存在
+     * @param config 消息配置
+     */
+    private void ensureMessageKeysExist(YamlConfiguration config) {
+        // 检查并添加必要的消息键
+        if (!config.contains("prefix")) {
+            config.set("prefix", "&f[&5&l&o末影箱&f]");
+        }
+        
+        if (!config.contains("mes")) {
+            config.set("mes", new java.util.HashMap<>());
+        }
+        
+        // 检查并添加 mes 下的必要消息键
+        Map<String, Object> mes = config.getConfigurationSection("mes").getValues(false);
+        
+        Map<String, String> defaultMessages = new java.util.HashMap<>();
+        defaultMessages.put("reload", "@prefix@ &c已重载配置文件");
+        defaultMessages.put("start-page", "@prefix@ &c已经没有上一页了");
+        defaultMessages.put("end-page", "@prefix@ &c已经没有下一页了");
+        defaultMessages.put("pre-number", "@prefix@ &7请先解锁 &2# @number@ &e末影箱");
+        defaultMessages.put("no-money", "@prefix@ &7你没有足够的&e金币&7来支持这次消费");
+        defaultMessages.put("no-points", "@prefix@ &7你没有足够的&c点卷&7来支持这次消费");
+        defaultMessages.put("unlock-box", "@prefix@ &7已解锁&2# @number@ &e末影箱");
+        defaultMessages.put("lock-data", "@prefix@ &7数据已加锁,请等待保存完成...");
+        defaultMessages.put("save-data", "@prefix@ &7已保存仓库物品");
+        defaultMessages.put("load-data", "@prefix@ &7正在为您加载跨服数据...");
+        defaultMessages.put("sur-load", "@prefix@ &7数据已加载完成");
+        defaultMessages.put("max-lock", "@prefix@ &7已到达解锁上限,氪点钱8");
+        defaultMessages.put("no-player", "@prefix@ &7玩家不存在");
+        defaultMessages.put("no-permission", "@prefix@ &7你没有权限执行此操作");
+        defaultMessages.put("box-lock", "@prefix@ &7末影箱已锁定");
+        
+        for (Map.Entry<String, String> entry : defaultMessages.entrySet()) {
+            if (!mes.containsKey(entry.getKey())) {
+                config.set("mes." + entry.getKey(), entry.getValue());
+            }
+        }
+        
+        // 保存配置到文件
+        try {
+            config.save(this.getVersionedMessageFile());
+        } catch (IOException e) {
+            this.plugin.getLogger().warning("保存消息配置文件失败: " + e.getMessage());
+        }
+    }
+    
+    /**
      * 关闭数据库连接
      */
     public void close() {
         this.fastMySQLStorage.disable();
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> d199dc23307236853a9b444e91a7b223fe082c7d

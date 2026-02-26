@@ -121,44 +121,15 @@ public final class MeteorEnderBox extends JavaPlugin
             final File file = new File(this.getDataFolder() + "/" + yml);
             if (!file.exists()) {
                 this.saveResource(yml, false);
-                this.getLogger().info("\u7f3a\u5931\u914d\u7f6e\u6587\u4ef6" + yml + ",\u5df2\u81ea\u52a8\u8865\u5168...");
-            }
-        }
-        
-        // 根据服务器版本保存对应的消息配置文件
-        String version = Bukkit.getVersion();
-        String versionPattern = "";
-        if (version.contains("1.16.5")) {
-            versionPattern = "1.16.5";
-        } else if (version.contains("1.17")) {
-            versionPattern = "1.17";
-        } else if (version.contains("1.18")) {
-            versionPattern = "1.18";
-        } else if (version.contains("1.19")) {
-            versionPattern = "1.19";
-        } else if (version.contains("1.20")) {
-            versionPattern = "1.20";
-        }
-        
-        // 确定要使用的消息配置文件
-        String messageFile = "message.yml";
-        if (!versionPattern.isEmpty()) {
-            String versionedMessageFile = "message_V" + versionPattern + ".yml";
-            // 检查版本特定的配置文件是否存在
-            if (this.getResource(versionedMessageFile) != null) {
-                messageFile = versionedMessageFile;
+                this.getLogger().info("缺少配置文件" + yml + ",已自动补充...");
             }
         }
         
         // 保存消息配置文件为 message.yml
         File messageYmlFile = new File(this.getDataFolder() + "/message.yml");
         if (!messageYmlFile.exists()) {
-            this.saveResource(messageFile, false);
-            this.getLogger().info("\u7f3a\u5931\u914d\u7f6e\u6587\u4ef6message.yml,\u5df2\u81ea\u52a8\u8865\u5168...");
+            this.saveResource("message.yml", false);
+            this.getLogger().info("缺少配置文件message.yml,已自动补充...");
         }
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> d199dc23307236853a9b444e91a7b223fe082c7d
